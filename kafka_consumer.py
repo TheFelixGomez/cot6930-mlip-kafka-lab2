@@ -13,16 +13,25 @@ topic = "cot6930-felix"
 # Ref: https://kafka-python.readthedocs.io/en/master/apidoc/KafkaConsumer.html
 consumer = KafkaConsumer(
     topic,
-    bootstrap_servers=['localhost:9092'],
-    auto_offset_reset='earliest',  # Experiment with different values (earliest reads all and latest reads only new messages)
+    bootstrap_servers=["localhost:19092"],
+    auto_offset_reset="earliest",  # Experiment with different values (earliest reads all and latest reads only new messages)
     # Commit that an offset has been read
     enable_auto_commit=True,
     # How often to tell Kafka, an offset has been read
-    auto_commit_interval_ms=1000
+    auto_commit_interval_ms=1000,
+    # SSL configuration to connect to the remote Kafka broker
+    security_protocol="SSL",
+    ssl_cafile="./certs/ca.pem",
+    ssl_certfile="./certs/service.cert",
+    ssl_keyfile="./certs/service.key",
+    api_version=(4, 1, 1),
+    ssl_check_hostname=False,
+    request_timeout_ms=30000,
+    metadata_max_age_ms=30000,
 )
 
-print('Reading Kafka Broker')
-print('Press Ctrl+C to stop')
+print("Reading Kafka Broker")
+print("Press Ctrl+C to stop")
 try:
     for message in consumer:
         message = message.value.decode()
