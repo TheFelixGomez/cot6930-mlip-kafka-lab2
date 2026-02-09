@@ -4,7 +4,6 @@ Reads data from Kafka broker and logs to file
 """
 
 import os
-from json import loads
 from kafka import KafkaConsumer
 
 topic = "cot6930-felix"
@@ -34,10 +33,10 @@ print("Reading Kafka Broker")
 print("Press Ctrl+C to stop")
 try:
     for message in consumer:
-        message = message.value.decode()
-        # Default message.value type is bytes!
-        print(loads(message))
-        os.system(f"echo {message} >> kafka_log.csv")
+        # message is a ConsumerRecord object
+        decoded_message = message.value.decode("utf-8")
+        print(f"Offset: {message.offset} | Received: {decoded_message}")
+        os.system(f"echo {decoded_message} >> kafka_log.csv")
 except KeyboardInterrupt:
     print("\nStopping consumer...")
 finally:
