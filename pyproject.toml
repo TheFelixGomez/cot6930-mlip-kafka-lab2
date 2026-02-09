@@ -1,0 +1,10 @@
+[project]
+name = "cot6930-mlip-kafka-lab2"
+version = "0.1.0"
+description = "A Kafka producer and consumer implementation for the COT6930 Artificial Intelligence & Machine Learning in Production course."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "ipykernel>=7.2.0",
+    "kafka-python>=2.3.0",
+]
