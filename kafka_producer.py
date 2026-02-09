@@ -32,9 +32,14 @@ cities = ["Bogota", "Boca Raton", "London", "Tokyo", "New York", "Sydney"]
 # Write data via the producer
 print("Writing to Kafka Broker")
 for i in range(10):
-    data = f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')},{cities[randint(0, len(cities) - 1)]},{randint(18, 32)}ºC"
-    print(f"Writing: {data}")
-    producer.send(topic=topic, value=data)
+    data = f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')},{cities[randint(0, len(cities) - 1)]},{randint(18, 32)}°C"
+    # Capture the metadata to show the offset
+    future = producer.send(topic=topic, value=data)
+    record_metadata = future.get(timeout=10)
+
+    print(
+        f"Sent: {data} | Partition: {record_metadata.partition} | Offset: {record_metadata.offset}"
+    )
     sleep(1)
 
 print("Finished writing 10 messages to Kafka")
